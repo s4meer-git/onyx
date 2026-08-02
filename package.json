@@ -1,0 +1,37 @@
+{
+  "name": "fitapp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "mkdir -p .data && pglite-server --db .data/pgdata --port 5433 --max-connections 20 --include-database-url --run \"next dev\"",
+    "build": "next build",
+    "start": "next start",
+    "media": "node scripts/build-media.mjs",
+    "dev:remote": "next dev",
+    "icons": "node scripts/build-icons.mjs",
+    "bodymap": "node scripts/build-bodymap.mjs",
+    "logo": "node scripts/build-logo.mjs",
+    "noise": "node scripts/build-noise.mjs"
+  },
+  "dependencies": {
+    "@simplewebauthn/browser": "^13.3.0",
+    "@simplewebauthn/server": "^13.3.2",
+    "drizzle-orm": "^0.45.2",
+    "jose": "^6.2.5",
+    "next": "^16.2.12",
+    "postgres": "^3.4.9",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.4",
+    "@electric-sql/pglite-socket": "^0.2.7",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "postcss": "^8.5.25",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
+  }
+}

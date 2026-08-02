@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-900: #08090b;
+  --color-ink-850: #0d0f13;
+  --color-ink-800: #12151b;
+  --color-ink-700: #1a1e26;
+  --color-ink-600: #252b36;
+  --color-ink-500: #39414f;
+  --color-mist-400: #7b8494;
+  --color-mist-300: #a4adbb;
+  --color-mist-200: #d3d9e2;
+  --color-flame: #ff7a1a;
+  --color-flame-soft: #ffb066;
+  --color-lime: #b8f24a;
+
+  --font-sans: ui-sans-serif, -apple-system, "SF Pro Text", "Inter", system-ui, sans-serif;
+
+  --radius-card: 22px;
+}
+
+:root {
+  color-scheme: dark;
+  --accent: #ff7a1a;
+  /* Brand gold — matches the gradient baked into public/logo.svg. */
+  --brand-gold: #dcaa4e;
+
+  /*
+   * Chart palette — validated against the #12151b card surface with
+   * scripts/validate_palette.js (dark mode). Do not hand-tweak these:
+   * re-run the validator if they need to change.
+   */
+  --viz-surface: #12151b;
+  --viz-orange: #d95926; /* categorical slot 1 — steps, volume */
+  --viz-blue: #3987e5; /* categorical slot 2 — bodyweight */
+  --viz-aqua: #199e70; /* categorical slot 3 — spare */
+  --viz-grid: #252b36;
+
+  /* Sequential orange ramp for the contribution heat map, low → high. */
+  --viz-heat-0: rgba(255, 255, 255, 0.055);
+  --viz-heat-1: #7a3b17;
+  --viz-heat-2: #a84e1d;
+  --viz-heat-3: #d05c26;
+  --viz-heat-4: #ee7534;
+  --viz-heat-5: #fb9c62;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  background: var(--color-ink-900);
+  /* Keeps the page from bouncing while dragging the set logger on iOS. */
+  overscroll-behavior-y: none;
+}
+
+body {
+  background:
+    radial-gradient(900px 520px at 50% -12%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 70%),
+    var(--color-ink-900);
+  color: var(--color-mist-200);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+/* Numbers line up in log tables and stat tiles. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+@utility card {
+  background: linear-gradient(160deg, var(--color-ink-800), var(--color-ink-850));
+  border: 1px solid color-mix(in oklab, white 7%, transparent);
+  border-radius: var(--radius-card);
+}
+
+@utility pressable {
+  transition: transform 140ms cubic-bezier(0.2, 0.8, 0.3, 1), opacity 140ms ease;
+
+  &:active {
+    transform: scale(0.97);
+    opacity: 0.9;
+  }
+}
+
+@utility safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+}
+
+/* Hide scrollbars on the horizontal day strip without losing scrollability. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The brand mark sits over both the page background and the card edge, so it
+   carries its own shadow to stay distinct from either. */
+.brand-mark {
+  /* A dark shadow is invisible against a dark page, so depth comes from a
+     hairline contact shadow plus a warm bloom picked up from the header glow. */
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.7)) drop-shadow(0 6px 18px rgba(255, 138, 60, 0.18));
+  opacity: 0.94;
+  /* Only the last sliver softens, so the base settles onto the card
+     instead of ending on a cut line. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+}
+
+.animate-pop {
+  animation: pop-in 320ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+@keyframes flame-flicker {
+  0%,
+  100% {
+    transform: scale(1) rotate(-1deg);
+  }
+  50% {
+    transform: scale(1.06) rotate(1.5deg);
+  }
+}
+
+.animate-flame {
+  animation: flame-flicker 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pop,
+  .animate-flame {
+    animation: none;
+  }
+}

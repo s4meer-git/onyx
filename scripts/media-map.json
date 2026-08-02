@@ -1,0 +1,202 @@
+{
+  "warmup-neck-rotations": [
+    "Friday/Universal WarmUp/Neck Rotations.gif"
+  ],
+  "warmup-shoulder-rolls": [
+    "Friday/Universal WarmUp/Shoulder Rolls.gif"
+  ],
+  "warmup-arm-circles": [
+    "Friday/Universal WarmUp/Arm Circles.gif"
+  ],
+  "warmup-hip-circles": [
+    "Friday/Universal WarmUp/Hip Circles.gif"
+  ],
+  "warmup-leg-swing-front-back": [
+    "Friday/Universal WarmUp/Leg Swing Front and Back.gif"
+  ],
+  "warmup-leg-swing-side": [
+    "Friday/Universal WarmUp/Leg Swing Sides.gif"
+  ],
+  "warmup-standing-toe-touch": [
+    "Friday/Universal WarmUp/Standing Toe Touch.gif"
+  ],
+  "warmup-cross-toe-touch": [
+    "Friday/Universal WarmUp/Standing Cross Toe Touch.gif"
+  ],
+  "warmup-lunges": [
+    "Friday/Universal WarmUp/Lunges.gif"
+  ],
+  "warmup-squats": [
+    "Friday/Universal WarmUp/Squats.gif"
+  ],
+  "knee-pushup-diamond": [
+    "Monday/Day Specific/Knee PushUps Diamond.GIF"
+  ],
+  "knee-pushup-outward": [
+    "Monday/Day Specific/Knee PushUps Outward.GIF"
+  ],
+  "dead-hang": [
+    "Tuesday/Day Specific WarmUp/Dead Hangs.AVIF"
+  ],
+  "thoracic-extension": [
+    "Tuesday/Day Specific WarmUp/Thorat Extension and Posture Correction.gif"
+  ],
+  "hip-drops-9090": [
+    "Wednesday/DaySpecific/9090_hip_drops.gif"
+  ],
+  "glute-bridge-warmup": [
+    "Wednesday/DaySpecific/glutebridge.gif"
+  ],
+  "lateral-lunges": [
+    "Wednesday/DaySpecific/lateral_lunges.gif"
+  ],
+  "calf-raise-warmup": [
+    "Sunday/DaySpecific/calf_raises.gif"
+  ],
+  "wrist-flexor-stretch": [
+    "Friday/DaySpecific/Wrist+Flexor+Stretch.gif"
+  ],
+  "wrist-extensor-stretch": [
+    "Friday/DaySpecific/wrist_extension stretch.gif"
+  ],
+  "wrist-rotations": [
+    "Friday/DaySpecific/wristrotation.gif"
+  ],
+  "db-incline-bench-press": [
+    "Monday/Chest/UpperChest/male-Dumbbells-dumbbell-incline-bench-press-side.mp4"
+  ],
+  "db-bench-press": [
+    "Monday/Chest/MiddleChest/male-dumbbell-bench-press-front_y8zKZJl.mp4",
+    "Monday/Chest/MiddleChest/male-dumbbell-bench-press-side_rqe1iTe.mp4"
+  ],
+  "db-chest-fly": [
+    "Monday/Chest/LowerChest/male-dumbbell-chest-fly-front.mp4",
+    "Monday/Chest/LowerChest/male-dumbbell-chest-fly-side.mp4"
+  ],
+  "db-skullcrusher": [
+    "Monday/Triceps/LateralandMedialHead/male-Dumbbells-dumbbell-skullcrusher-front.mp4",
+    "Monday/Triceps/LateralandMedialHead/male-Dumbbells-dumbbell-skullcrusher-side.mp4",
+    "Friday/Triceps/dumbell_skull_head_crusher.mp4"
+  ],
+  "db-overhead-triceps-extension": [
+    "Monday/Triceps/LongHead/male-Dumbbells-dumbbell-seated-overhead-tricep-extension-front.mp4",
+    "Monday/Triceps/LongHead/male-Dumbbells-dumbbell-seated-overhead-tricep-extension-side.mp4"
+  ],
+  "db-pullover": [
+    "Monday/Serratus Anterior/male-Dumbbells-dumbbell-pullover-front.mp4",
+    "Monday/Serratus Anterior/male-Dumbbells-dumbbell-pullover-side.mp4"
+  ],
+  "db-single-arm-pullover": [
+    "Thursday/Wings/Dumbell Single Arm PullOver/male-Dumbbells-dumbbell-single-arm-pullover-front.mp4",
+    "Thursday/Wings/Dumbell Single Arm PullOver/male-Dumbbells-dumbbell-single-arm-pullover-side.mp4"
+  ],
+  "db-single-arm-row": [
+    "Tuesday/Back/Lats/male-Dumbbells-dumbbell-single-arm-row-front.mp4",
+    "Tuesday/Back/Lats/male-Dumbbells-dumbbell-single-arm-row-side.mp4"
+  ],
+  "db-chest-supported-row": [
+    "Tuesday/Back/UpperBack/dumbell_chest_supported_row.mp4"
+  ],
+  "db-romanian-deadlift": [
+    "Tuesday/Back/LowerBack/male-Dumbbells-dumbbell-romanian-deadlift-front.mp4",
+    "Tuesday/Back/LowerBack/male-Dumbbells-dumbbell-romanian-deadlift-side.mp4"
+  ],
+  "traps-complex": [
+    "Sunday/Traps/Build your traps from top to bottom.Hit upper, mid, and lower build a complete back.💡 Tip- Cont.mp4"
+  ],
+  "db-curl": [
+    "Friday/Biceps/Biceps_OverAll.mp4"
+  ],
+  "db-wide-curl": [
+    "Friday/Biceps/Biceps_ShortHead.mp4"
+  ],
+  "db-hammer-curl": [
+    "Friday/Biceps/Biceps_Brachialis.mp4"
+  ],
+  "db-close-grip-curl": [
+    "Friday/Biceps/Biceps_LongHead.mp4"
+  ],
+  "db-bulgarian-split-squat": [
+    "Wednesday/Legs Quads Hams Glutes/dumbell bulgarian split squat/male-Dumbbells-dumbbell-bulgarian-split-squat-front_P7GOi9A.mp4",
+    "Wednesday/Legs Quads Hams Glutes/dumbell bulgarian split squat/male-Dumbbells-dumbbell-bulgarian-split-squat-side.mp4"
+  ],
+  "db-leg-curl": [
+    "Wednesday/Legs Quads Hams Glutes/Dumbell Leg Curl/male-dumbbell-leg-curl-front.mp4",
+    "Wednesday/Legs Quads Hams Glutes/Dumbell Leg Curl/male-dumbbell-leg-curl-side.mp4"
+  ],
+  "db-hip-thrust": [
+    "Wednesday/Legs Quads Hams Glutes/dumbel hip thrust/male-Dumbbells-dumbbell-hip-thrust-front.mp4",
+    "Wednesday/Legs Quads Hams Glutes/dumbel hip thrust/male-Dumbbells-dumbbell-hip-thrust-side.mp4"
+  ],
+  "db-glute-bridge": [
+    "Wednesday/Legs Quads Hams Glutes/dumbell goblet good morning/male-Dumbbells-dumbbell-glute-bridge-front.mp4",
+    "Wednesday/Legs Quads Hams Glutes/dumbell glute bridge/male-Dumbbells-dumbbell-glute-bridge-side.mp4"
+  ],
+  "db-goblet-good-morning": [
+    "Wednesday/Legs Quads Hams Glutes/dumbell goblet good morning/male-Dumbbells-dumbbell-goblet-good-morning-front.mp4",
+    "Wednesday/Legs Quads Hams Glutes/dumbell goblet good morning/male-Dumbbells-dumbbell-goblet-good-morning-side.mp4"
+  ],
+  "db-seated-lateral-raise": [
+    "Thursday/Shoulder/LateralDelts.mp4"
+  ],
+  "db-seated-shoulder-press": [
+    "Thursday/Shoulder/FrontandLateralDelts.mp4"
+  ],
+  "db-seated-front-raise": [
+    "Thursday/Shoulder/FrontDelts.mp4"
+  ],
+  "db-bent-over-rear-delt-fly": [
+    "Thursday/Shoulder/RearDelts.mp4"
+  ],
+  "db-arnold-press": [
+    "Thursday/Shoulder/FrontandLateralDelts2.mp4"
+  ],
+  "db-standing-calf-raise": [
+    "Sunday/Calves/male-Dumbbells-dumbbell-calf-raise-side.mp4"
+  ],
+  "db-seated-calf-raise": [
+    "Sunday/Calves/male-Dumbbells-dumbbell-seated-calf-raise-side.mp4"
+  ],
+  "db-single-leg-calf-raise": [
+    "Sunday/Calves/male-Dumbbells-dumbbell-single-leg-calf-raise-side.mp4"
+  ],
+  "tibialis-raise": [
+    "Sunday/Tibia/male-Dumbbells-standing-tibialis-raise-side.mp4"
+  ],
+  "bench-dips": [
+    "Friday/Triceps/male-Bodyweight-bench-dips-side.mp4"
+  ],
+  "db-tricep-kickback": [
+    "extra for triceps/vidssave.com Bench Tricep Kickbacks 480P.mp4"
+  ],
+  "db-single-arm-overhead-extension": [
+    "Friday/Triceps/Single_Arm_Overhead_Extension.mp4"
+  ],
+  "forearm-circuit": [
+    "Friday/forearms.MP4"
+  ],
+  "crunch": [
+    "Saturday/Abs /upperabs.mp4"
+  ],
+  "reverse-crunch": [
+    "Saturday/Abs /lowerabs.mp4"
+  ],
+  "double-crunch": [
+    "Saturday/Abs /upper+lower.mp4"
+  ],
+  "heel-touch": [
+    "Saturday/Abs /obliques.mp4"
+  ],
+  "v-up": [
+    "Saturday/Abs /overallabs.mp4"
+  ],
+  "db-bent-over-row": [
+    "new extra/6bbc2910c2d94298b080c01cc029f691.mov"
+  ],
+  "db-standing-lateral-raise": [
+    "new extra/e0e2f9a62fc5481dae45733e939e74b2.mov"
+  ],
+  "db-concentration-curl": [
+    "new extra/vidssave.com Dumbbell concentration curl for the biceps peak. Old school, baby! 480P.mp4"
+  ]
+}

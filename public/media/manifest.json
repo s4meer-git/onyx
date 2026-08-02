@@ -1,0 +1,202 @@
+{
+  "warmup-neck-rotations": [
+    "warmup-neck-rotations"
+  ],
+  "warmup-shoulder-rolls": [
+    "warmup-shoulder-rolls"
+  ],
+  "warmup-arm-circles": [
+    "warmup-arm-circles"
+  ],
+  "warmup-hip-circles": [
+    "warmup-hip-circles"
+  ],
+  "warmup-leg-swing-front-back": [
+    "warmup-leg-swing-front-back"
+  ],
+  "warmup-leg-swing-side": [
+    "warmup-leg-swing-side"
+  ],
+  "warmup-standing-toe-touch": [
+    "warmup-standing-toe-touch"
+  ],
+  "warmup-cross-toe-touch": [
+    "warmup-cross-toe-touch"
+  ],
+  "warmup-lunges": [
+    "warmup-lunges"
+  ],
+  "warmup-squats": [
+    "warmup-squats"
+  ],
+  "knee-pushup-diamond": [
+    "knee-pushup-diamond"
+  ],
+  "knee-pushup-outward": [
+    "knee-pushup-outward"
+  ],
+  "dead-hang": [
+    "dead-hang"
+  ],
+  "thoracic-extension": [
+    "thoracic-extension"
+  ],
+  "hip-drops-9090": [
+    "hip-drops-9090"
+  ],
+  "glute-bridge-warmup": [
+    "glute-bridge-warmup"
+  ],
+  "lateral-lunges": [
+    "lateral-lunges"
+  ],
+  "calf-raise-warmup": [
+    "calf-raise-warmup"
+  ],
+  "wrist-flexor-stretch": [
+    "wrist-flexor-stretch"
+  ],
+  "wrist-extensor-stretch": [
+    "wrist-extensor-stretch"
+  ],
+  "wrist-rotations": [
+    "wrist-rotations"
+  ],
+  "db-incline-bench-press": [
+    "db-incline-bench-press"
+  ],
+  "db-bench-press": [
+    "db-bench-press",
+    "db-bench-press-2"
+  ],
+  "db-chest-fly": [
+    "db-chest-fly",
+    "db-chest-fly-2"
+  ],
+  "db-skullcrusher": [
+    "db-skullcrusher",
+    "db-skullcrusher-2",
+    "db-skullcrusher-3"
+  ],
+  "db-overhead-triceps-extension": [
+    "db-overhead-triceps-extension",
+    "db-overhead-triceps-extension-2"
+  ],
+  "db-pullover": [
+    "db-pullover",
+    "db-pullover-2"
+  ],
+  "db-single-arm-pullover": [
+    "db-single-arm-pullover",
+    "db-single-arm-pullover-2"
+  ],
+  "db-single-arm-row": [
+    "db-single-arm-row",
+    "db-single-arm-row-2"
+  ],
+  "db-chest-supported-row": [
+    "db-chest-supported-row"
+  ],
+  "db-romanian-deadlift": [
+    "db-romanian-deadlift",
+    "db-romanian-deadlift-2"
+  ],
+  "traps-complex": [
+    "traps-complex"
+  ],
+  "db-curl": [
+    "db-curl"
+  ],
+  "db-wide-curl": [
+    "db-wide-curl"
+  ],
+  "db-hammer-curl": [
+    "db-hammer-curl"
+  ],
+  "db-close-grip-curl": [
+    "db-close-grip-curl"
+  ],
+  "db-bulgarian-split-squat": [
+    "db-bulgarian-split-squat",
+    "db-bulgarian-split-squat-2"
+  ],
+  "db-leg-curl": [
+    "db-leg-curl",
+    "db-leg-curl-2"
+  ],
+  "db-hip-thrust": [
+    "db-hip-thrust",
+    "db-hip-thrust-2"
+  ],
+  "db-glute-bridge": [
+    "db-glute-bridge",
+    "db-glute-bridge-2"
+  ],
+  "db-goblet-good-morning": [
+    "db-goblet-good-morning",
+    "db-goblet-good-morning-2"
+  ],
+  "db-seated-lateral-raise": [
+    "db-seated-lateral-raise"
+  ],
+  "db-seated-shoulder-press": [
+    "db-seated-shoulder-press"
+  ],
+  "db-seated-front-raise": [
+    "db-seated-front-raise"
+  ],
+  "db-bent-over-rear-delt-fly": [
+    "db-bent-over-rear-delt-fly"
+  ],
+  "db-arnold-press": [
+    "db-arnold-press"
+  ],
+  "db-standing-calf-raise": [
+    "db-standing-calf-raise"
+  ],
+  "db-seated-calf-raise": [
+    "db-seated-calf-raise"
+  ],
+  "db-single-leg-calf-raise": [
+    "db-single-leg-calf-raise"
+  ],
+  "tibialis-raise": [
+    "tibialis-raise"
+  ],
+  "bench-dips": [
+    "bench-dips"
+  ],
+  "db-single-arm-overhead-extension": [
+    "db-single-arm-overhead-extension"
+  ],
+  "forearm-circuit": [
+    "forearm-circuit"
+  ],
+  "crunch": [
+    "crunch"
+  ],
+  "reverse-crunch": [
+    "reverse-crunch"
+  ],
+  "double-crunch": [
+    "double-crunch"
+  ],
+  "heel-touch": [
+    "heel-touch"
+  ],
+  "v-up": [
+    "v-up"
+  ],
+  "db-tricep-kickback": [
+    "db-tricep-kickback"
+  ],
+  "db-bent-over-row": [
+    "db-bent-over-row"
+  ],
+  "db-standing-lateral-raise": [
+    "db-standing-lateral-raise"
+  ],
+  "db-concentration-curl": [
+    "db-concentration-curl"
+  ]
+}

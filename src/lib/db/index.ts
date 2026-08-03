@@ -7,7 +7,7 @@ export { schema };
 
 /**
  * Plain Postgres over the wire, everywhere:
- *   • production → Neon / Supabase / any Postgres, via DATABASE_URL
+ *   • production → the `db` service in docker-compose (or any Postgres), via DATABASE_URL
  *   • local dev  → `npm run dev` starts an embedded PGlite server and injects
  *                  DATABASE_URL, so development runs the exact same code path.
  */
@@ -78,8 +78,9 @@ async function connect() {
   const url = process.env.DATABASE_URL;
   if (!url) {
     throw new Error(
-      "DATABASE_URL is not set. Run `npm run dev` (starts a local Postgres for you) " +
-        "or point it at your Neon connection string.",
+      "DATABASE_URL is not set. Start the app with `docker compose up -d` (which brings its own " +
+        "Postgres and wires this up for you) — a bare `docker run onyx-app` has no database to talk to. " +
+        "For local development, `npm run dev` starts an embedded Postgres instead.",
     );
   }
 

@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  // PGlite ships a wasm build that must not be bundled into the server output.
+  // Keeps the `postgres` driver as a real dependency rather than bundled,
+  // and produces a self-contained server/ folder for the Docker image.
   serverExternalPackages: ["postgres"],
+  output: "standalone",
   async headers() {
     return [
       {

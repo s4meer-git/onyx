@@ -1,0 +1,66 @@
+# Coolify deployment. Point the resource's "Docker Compose Location" at
+# /docker-compose.coolify.yml.
+#
+# Differences from the plain docker-compose.yml in this folder:
+#   • `expose` instead of `ports` — Coolify's Traefik proxy reaches the app on
+#     the internal network and publishes it on your domain with a Let's Encrypt
+#     certificate. Publishing a host port would bypass the proxy (and the TLS).
+#   • `SERVICE_FQDN_APP_3000` tells Coolify which service and port the domain
+#     belongs to; it fills the value in and shows the URL in the dashboard.
+#   • `SERVICE_PASSWORD_POSTGRES` is generated once by Coolify and kept for the
+#     life of the resource — one less secret to invent or store.
+#   • No `${VAR:?...}` guards: Coolify supplies env vars from its own UI, and
+#     the shell-style failure syntax reads as a parse error there.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: onyx
+      POSTGRES_PASSWORD: ${SERVICE_PASSWORD_POSTGRES}
+      POSTGRES_DB: onyx
+    volumes:
+      # Named volume — Coolify namespaces it per resource and keeps it across
+      # redeploys. This is the only thing that holds your training log.
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U onyx -d onyx"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* is inlined at build time, so it has to arrive here
+        # rather than as a runtime environment variable.
+        NEXT_PUBLIC_TIMEZONE: ${NEXT_PUBLIC_TIMEZONE:-Asia/Kolkata}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SERVICE_FQDN_APP_3000: /
+      DATABASE_URL: postgres://onyx:${SERVICE_PASSWORD_POSTGRES}@db:5432/onyx
+      AUTH_SECRET: ${AUTH_SECRET}
+      ACCESS_CODE: ${ACCESS_CODE}
+      API_TOKEN: ${API_TOKEN}
+      APP_USER_NAME: ${APP_USER_NAME:-Athlete}
+    expose:
+      - "3000"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+
+volumes:
+  db-data:

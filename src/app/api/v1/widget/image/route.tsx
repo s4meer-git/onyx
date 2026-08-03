@@ -217,19 +217,19 @@ export async function GET(request: Request) {
 
               <img
                 src={`${origin}/logo-mark.png`}
-                width={pt(44)}
-                height={pt(17.5)}
-                style={{ opacity: 0.92 }}
+                width={pt(65)}
+                height={pt(25)}
+                style={{ opacity: 1 }}
                 alt=""
               />
             </div>
 
             {/* ── Streak ── */}
-            <div style={{ display: "flex", alignItems: "center", gap: pt(7), marginTop: pt(9) }}>
+            <div style={{ display: "flex", alignItems: "center", gap: pt(5), marginTop: pt(3) }}>
               <img
                 src={`${origin}/fire.png`}
-                width={pt(30)}
-                height={pt(30)}
+                width={pt(45)}
+                height={pt(45)}
                 style={{ opacity: cold ? 0.3 : 1 }}
                 alt=""
               />
@@ -246,7 +246,7 @@ export async function GET(request: Request) {
                   >
                     {streak.current}
                   </span>
-                  <span style={{ fontSize: pt(10), color: label, paddingBottom: pt(2), lineHeight: 1 }}>
+                  <span style={{ fontSize: pt(10), color: label, paddingBottom: pt(4), lineHeight: 1 }}>
                     {streak.current === 1 ? "day" : "days"}
                   </span>
                 </div>

@@ -1,0 +1,40 @@
+name: onyx
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: onyx
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-onyx}
+      POSTGRES_DB: onyx
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U onyx -d onyx"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # No ports published by default — the app reaches it over the compose
+    # network. Uncomment to inspect the DB with an external client:
+    # ports:
+    #   - "5432:5432"
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://onyx:${POSTGRES_PASSWORD:-onyx}@db:5432/onyx
+      AUTH_SECRET: ${AUTH_SECRET:?set AUTH_SECRET in .env — see .env.docker.example}
+      ACCESS_CODE: ${ACCESS_CODE:?set ACCESS_CODE in .env — see .env.docker.example}
+      API_TOKEN: ${API_TOKEN:-}
+      APP_USER_NAME: ${APP_USER_NAME:-Athlete}
+      NEXT_PUBLIC_TIMEZONE: ${NEXT_PUBLIC_TIMEZONE:-Asia/Kolkata}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+
+volumes:
+  db-data:

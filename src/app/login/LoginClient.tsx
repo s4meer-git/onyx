@@ -4,12 +4,19 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { startAuthentication, startRegistration } from "@simplewebauthn/browser";
 
-export function LoginClient({ hasPasskey }: { hasPasskey: boolean }) {
+export function LoginClient({
+  hasPasskey,
+  passkeyBlockedReason,
+}: {
+  hasPasskey: boolean;
+  passkeyBlockedReason: string | null;
+}) {
   const router = useRouter();
   const [busy, setBusy] = useState<"passkey" | "code" | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [showCode, setShowCode] = useState(!hasPasskey);
+  const [showCode, setShowCode] = useState(!hasPasskey || Boolean(passkeyBlockedReason));
   const [code, setCode] = useState("");
+  const canUsePasskey = hasPasskey && !passkeyBlockedReason;
 
   async function signInWithPasskey() {
     setBusy("passkey");
@@ -57,7 +64,7 @@ export function LoginClient({ hasPasskey }: { hasPasskey: boolean }) {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error ?? "Incorrect code");
 
-      if (createPasskey) {
+      if (createPasskey && !passkeyBlockedReason) {
         try {
           await enrolPasskey(code);
         } catch {
@@ -83,7 +90,7 @@ export function LoginClient({ hasPasskey }: { hasPasskey: boolean }) {
       </header>
 
       <div className="space-y-3">
-        {hasPasskey && (
+        {canUsePasskey && (
           <button
             type="button"
             onClick={signInWithPasskey}
@@ -94,7 +101,7 @@ export function LoginClient({ hasPasskey }: { hasPasskey: boolean }) {
           </button>
         )}
 
-        {!showCode && hasPasskey && (
+        {!showCode && canUsePasskey && (
           <button
             type="button"
             onClick={() => setShowCode(true)}
@@ -124,13 +131,23 @@ export function LoginClient({ hasPasskey }: { hasPasskey: boolean }) {
               disabled={busy !== null || code.length === 0}
               className="pressable w-full rounded-xl bg-flame py-3 text-sm font-bold text-ink-900 disabled:opacity-40"
             >
-              {busy === "code" ? "Checking…" : hasPasskey ? "Sign in" : "Sign in & create passkey"}
+              {busy === "code"
+                ? "Checking…"
+                : hasPasskey || passkeyBlockedReason
+                  ? "Sign in"
+                  : "Sign in & create passkey"}
             </button>
-            {!hasPasskey && (
+            {passkeyBlockedReason ? (
               <p className="text-center text-[11px] leading-relaxed text-mist-400">
-                Your device will offer to save a passkey — after that, Face ID or your fingerprint is all
-                you need.
+                {passkeyBlockedReason}
               </p>
+            ) : (
+              !hasPasskey && (
+                <p className="text-center text-[11px] leading-relaxed text-mist-400">
+                  Your device will offer to save a passkey — after that, Face ID or your fingerprint is
+                  all you need.
+                </p>
+              )
             )}
           </div>
         )}

@@ -29,12 +29,17 @@ async function authorise(accessCode?: string) {
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
-  const { rpID, rpName, origin } = await relyingParty();
+  const { rpID, rpName, origin, passkeyBlockedReason } = await relyingParty();
 
   /* Step 1 — hand the browser a challenge. */
   if (body.step === "options") {
     if (!(await authorise(body.accessCode))) {
       return NextResponse.json({ error: "Access code incorrect" }, { status: 401 });
+    }
+    // Fail here with an explanation rather than handing the browser options it
+    // will reject with an opaque SecurityError.
+    if (passkeyBlockedReason) {
+      return NextResponse.json({ error: passkeyBlockedReason }, { status: 400 });
     }
     await ensureUser();
 

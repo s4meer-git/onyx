@@ -1,11 +1,17 @@
+import { DataBackup } from "@/components/DataBackup";
 import { ProfileForm } from "@/components/ProfileForm";
+import { relyingParty } from "@/lib/auth";
 import { USER_NAME, getProfile, listCredentials } from "@/lib/queries";
 import { SettingsClient } from "./SettingsClient";
 
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
-  const [credentials, profile] = await Promise.all([listCredentials(), getProfile()]);
+  const [credentials, profile, { passkeyBlockedReason }] = await Promise.all([
+    listCredentials(),
+    getProfile(),
+    relyingParty(),
+  ]);
 
   return (
     <main className="space-y-5">
@@ -16,7 +22,10 @@ export default async function SettingsPage() {
 
       <ProfileForm profile={profile} />
 
+      <DataBackup />
+
       <SettingsClient
+        passkeyBlockedReason={passkeyBlockedReason}
         passkeys={credentials.map((credential) => ({
           id: credential.id,
           deviceName: credential.deviceName,

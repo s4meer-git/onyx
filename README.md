@@ -25,8 +25,8 @@ Everything in the stack has a permanent free tier.
 
 ## Stack (all free)
 
-- **Next.js 16** (App Router, React 19) — hosted free on **Vercel**
-- **Postgres** — free on **Neon** (0.5 GB; this app uses a few MB a year)
+- **Next.js 16** (App Router, React 19) — runs anywhere Docker does
+- **Postgres 16** — its own container, on a persistent volume; no managed service, no account
 - **Drizzle ORM** — schema is created automatically on first request, no migration step
 - **SimpleWebAuthn** — passkeys (Face ID / Touch ID / Android biometrics)
 - **Tailwind CSS 4**
@@ -70,50 +70,174 @@ npm run logo      # rebuild public/logo.svg from brand_logo.text (crops + golds 
 
 ---
 
-## Deploying free
+## Deploying
 
-### 1. Database — Neon
+The app ships as a Docker image with its own Postgres — no external database
+service, nothing to sign up for, and the whole thing moves between machines as
+one folder plus one volume.
 
-1. Sign up at [neon.tech](https://neon.tech) (free tier, no card).
-2. Create a project, copy the **pooled** connection string
-   (`postgres://…-pooler.…neon.tech/neondb?sslmode=require`).
+```bash
+cd fitapp
+cp .env.docker.example .env
+# fill in AUTH_SECRET (openssl rand -base64 32) and ACCESS_CODE
+docker compose up -d --build
+```
 
-Tables are created automatically on the first request — nothing else to run.
+That builds the image, starts Postgres 16 with a persistent volume, waits for it
+to be healthy, then starts the app on **http://localhost:3000** (override with
+`APP_PORT` in `.env`). Data survives `docker compose down` / `up` — it lives in
+the `onyx_db-data` volume, not in the container.
 
-### 2. App — Vercel
+| Command | Does |
+| --- | --- |
+| `docker compose up -d --build` | build + start, detached |
+| `docker compose logs -f app` | tail the app's logs |
+| `docker compose down` | stop and remove containers (volume kept) |
+| `docker compose down -v` | stop and **delete the database** too |
 
-1. Push this folder to GitHub.
-2. Import the repo at [vercel.com/new](https://vercel.com/new), set the root
-   directory to `fitapp`.
-3. Add environment variables:
+Run it on a home server, a spare laptop, or a free always-on VM (Oracle Cloud's
+Always Free tier is a real one). The image is a multi-stage build on Next.js's
+`standalone` output — no dev tooling in the final image, non-root user, container
+`HEALTHCHECK`. `Dockerfile`, `docker-compose.yml` and `.dockerignore` are all in
+this folder.
 
-   | Key | Value |
-   | --- | --- |
-   | `AUTH_SECRET` | output of `openssl rand -base64 32` |
-   | `ACCESS_CODE` | your private code |
-   | `DATABASE_URL` | the Neon pooled connection string |
-   | `API_TOKEN` | *(optional)* random string for the read-only API |
-   | `APP_USER_NAME` | *(optional)* your name, shown on the dashboard |
-   | `NEXT_PUBLIC_TIMEZONE` | *(optional)* defaults to `Asia/Kolkata` |
+> `docker run onyx-app` on its own will start but fail on every request with
+> *"DATABASE\_URL is not set"* — the image is only half the system. Use
+> `docker compose up`, which brings the database with it, or pass a
+> `DATABASE_URL` pointing at a Postgres you already run.
 
-4. Deploy.
+### Deploying with Coolify
 
-### 3. First sign-in
+[Coolify](https://coolify.io) is a self-hosted PaaS that builds this repo,
+runs both containers, and — the part that matters here — puts a real domain
+with an automatic Let's Encrypt certificate in front of the app. That is what
+makes **passkeys work**, which they can't over a bare LAN IP.
 
-Open the site on your phone → enter the access code → your phone offers to save
-a passkey → accept. From then on, opening the app is Face ID and nothing else.
+Coolify itself is free and open source, but it runs *on a machine you provide*.
+A spare laptop, a mini PC or a Raspberry Pi on your own network costs nothing
+and needs no card; a small VPS is a few dollars a month. See the HTTPS section
+below for reaching a home box from outside without opening ports.
 
-Add a passkey on each other device from **Settings → Add a passkey for this
-device**.
+**1. Push the repo** to GitHub, GitLab or a self-hosted Gitea. Private is fine —
+Coolify authenticates as a GitHub App or with a deploy key.
 
-> **Passkeys are tied to a domain.** Use one fixed domain (your `*.vercel.app`
-> URL or a custom one). A passkey created on a preview URL won't work on
-> production.
+**2. Install Coolify** on the server:
 
-### 4. Add to home screen
+```bash
+curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
+```
+
+Then open `http://<server-ip>:8000` and create the admin account.
+
+**3. Create the resource.** *+ New* → *Docker Compose* → pick your repository,
+then set:
+
+| Field | Value |
+| --- | --- |
+| Branch | `main` |
+| Base Directory | `/` |
+| Docker Compose Location | `/docker-compose.coolify.yml` |
+
+That file is in this folder alongside the plain `docker-compose.yml`. It swaps
+`ports:` for `expose:` so traffic goes through Coolify's proxy rather than
+around it, declares `SERVICE_FQDN_APP_3000` so Coolify knows which service the
+domain belongs to, and lets Coolify generate the Postgres password.
+
+**4. Set the environment variables** under *Environment Variables*:
+
+| Key | Value |
+| --- | --- |
+| `AUTH_SECRET` | output of `openssl rand -base64 32` — changing it later signs out every device |
+| `ACCESS_CODE` | your sign-in code |
+| `API_TOKEN` | *(optional)* token for the read-only `/api/v1/*` endpoints and the iPhone widget |
+| `APP_USER_NAME` | *(optional)* the name shown on the dashboard |
+| `NEXT_PUBLIC_TIMEZONE` | *(optional)* defaults to `Asia/Kolkata` |
+
+Leave `DATABASE_URL` and `SERVICE_PASSWORD_POSTGRES` alone — the compose file
+wires those up itself.
+
+`NEXT_PUBLIC_TIMEZONE` is inlined into the client bundle at build time, so
+changing it needs a rebuild, not just a restart.
+
+**5. Point a domain at the server** (an `A` record to its IP), set it on the
+**app** service under *Domains*, and deploy. Coolify issues the certificate on
+the first request. Open the site, enter your access code, and accept the
+passkey prompt.
+
+> Use one fixed domain and keep it. Passkeys are pinned to the hostname they
+> were created on — change the domain and you're back to the access code (and
+> then add a fresh passkey).
+
+**Persistence.** The `db-data` volume is namespaced to the resource and
+survives redeploys, restarts and image rebuilds. It does *not* survive deleting
+the resource, so take a backup from **Settings → Backup & restore** before any
+destructive change — that zip restores onto a brand-new Coolify install, and if
+the new one answers on the same domain, even your passkeys come back.
+
+### Serving it over HTTPS (needed for passkeys)
+
+A LAN IP like `http://192.168.1.20:3000` works fine for logging in with the
+access code, but **passkeys will not work there** — WebAuthn requires a real
+hostname over HTTPS (`localhost` is the one exemption). The app detects this and
+says so on the sign-in screen instead of failing cryptically.
+
+Coolify (above) handles this for you. If you're running plain
+`docker compose` instead, put a hostname with a certificate in front yourself.
+Any of these is free:
+
+- **Tailscale** — `tailscale serve` / `tailscale cert` gives every device a
+  `*.ts.net` name with a valid certificate, reachable only from your own network.
+- **Cloudflare Tunnel** — `cloudflared tunnel` publishes the container on a
+  hostname with HTTPS, no port forwarding and no public IP. This is also how you
+  reach a Coolify box sitting on your home network from outside.
+- **Caddy** in front of the app, with a domain you own — automatic Let's Encrypt.
+
+Whichever you pick, terminate TLS at the proxy and forward `X-Forwarded-Proto`
+and `X-Forwarded-Host`; the app reads those to build the WebAuthn origin.
+
+### Alternatively: Vercel
+
+The same code deploys to Vercel unchanged — set the root directory to `fitapp`
+and point `DATABASE_URL` at any Postgres you like. You lose the "everything in
+one image" property, which is the main reason the Docker path is the default.
+
+| Key | Value |
+| --- | --- |
+| `AUTH_SECRET` | output of `openssl rand -base64 32` |
+| `ACCESS_CODE` | your private code |
+| `DATABASE_URL` | any Postgres connection string |
+| `API_TOKEN` | *(optional)* random string for the read-only API |
+| `APP_USER_NAME` | *(optional)* your name, shown on the dashboard |
+| `NEXT_PUBLIC_TIMEZONE` | *(optional)* defaults to `Asia/Kolkata` |
+
+### First sign-in
+
+Open the site → enter the access code → if you're on HTTPS, your device offers
+to save a passkey → accept. From then on it's Face ID and nothing else. Add a
+passkey on each other device from **Settings → Add a passkey for this device**.
+
+> **Passkeys are pinned to a hostname.** Pick one stable address and stick to
+> it; a passkey created on a different host won't verify.
+
+### Add to home screen
 
 On iOS: Share → Add to Home Screen. On Android: menu → Install app. It launches
 full-screen like a native app.
+
+---
+
+## Backup & restore
+
+**Settings → Backup & restore** downloads a `.zip` containing `data.json`: a
+complete dump of every row the app owns — sets (reps, weight, duration, notes,
+timestamps), completed sessions, daily steps/weight/notes, your body profile and
+your registered passkeys. Restoring is upsert-only: rows matching on date are
+overwritten, nothing is ever deleted, and re-importing the same file twice is a
+no-op.
+
+This is the answer to "the server is going away". Export, move the compose stack
+wherever, restore. If the new machine answers on the same hostname, even the
+passkeys keep working.
 
 ---
 

@@ -12,7 +12,13 @@ type Passkey = {
   lastUsedAt: string | null;
 };
 
-export function SettingsClient({ passkeys }: { passkeys: Passkey[] }) {
+export function SettingsClient({
+  passkeys,
+  passkeyBlockedReason,
+}: {
+  passkeys: Passkey[];
+  passkeyBlockedReason: string | null;
+}) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
@@ -55,6 +61,12 @@ export function SettingsClient({ passkeys }: { passkeys: Passkey[] }) {
           Add one per device. Sign in with Face ID, Touch ID or your device PIN — no password to type.
         </p>
 
+        {passkeyBlockedReason && (
+          <p className="mt-3 rounded-xl bg-amber-400/10 px-3 py-2.5 text-[11px] leading-relaxed text-amber-200">
+            {passkeyBlockedReason}
+          </p>
+        )}
+
         <div className="mt-3 space-y-2">
           {passkeys.length === 0 && (
             <p className="rounded-xl bg-white/[.03] px-3 py-3 text-xs text-mist-400">
@@ -85,7 +97,7 @@ export function SettingsClient({ passkeys }: { passkeys: Passkey[] }) {
         <button
           type="button"
           onClick={addPasskey}
-          disabled={busy}
+          disabled={busy || Boolean(passkeyBlockedReason)}
           className="pressable mt-3 w-full rounded-xl bg-white py-3 text-sm font-bold text-ink-900 disabled:opacity-50"
         >
           {busy ? "Waiting for device…" : "Add a passkey for this device"}

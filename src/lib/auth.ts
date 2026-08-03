@@ -84,19 +84,40 @@ export async function consumeChallenge(): Promise<string | null> {
   }
 }
 
+/** A bare IPv4/IPv6 literal — never a legal WebAuthn RP ID. */
+const IP_LITERAL = /^(\d{1,3}\.){3}\d{1,3}$|^\[?[0-9a-f]*:[0-9a-f:]+\]?$/i;
+
 /**
  * WebAuthn is bound to an origin. Derive it from the request so the same build
- * works on localhost, a preview URL and the production domain.
+ * works on localhost, a LAN address and the production domain.
  */
 export async function relyingParty() {
   const headerList = await headers();
   const host = headerList.get("x-forwarded-host") ?? headerList.get("host") ?? "localhost:3000";
-  const proto = headerList.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
-  const rpID = host.split(":")[0];
+  const hostname = host.replace(/:\d+$/, "").replace(/^\[|\]$/g, "");
+
+  // Behind a reverse proxy the real scheme only arrives in x-forwarded-proto.
+  // Without it, assume http for anything that can't have a public certificate
+  // (localhost, a LAN IP, a .local name) and https for everything else.
+  const isLocal = hostname === "localhost" || IP_LITERAL.test(hostname) || hostname.endsWith(".local");
+  const proto = headerList.get("x-forwarded-proto")?.split(",")[0].trim() ?? (isLocal ? "http" : "https");
+
   return {
-    rpID,
-    rpName: "Workout",
+    rpID: hostname,
+    rpName: "ONYX",
     origin: `${proto}://${host}`,
+    /**
+     * WebAuthn requires a *domain* as the RP ID and a secure context as the
+     * origin. `localhost` is exempt from the secure-context rule; a raw IP is
+     * exempt from nothing and is rejected outright by the spec. Surfacing this
+     * as a plain sentence beats letting the browser throw `SecurityError`.
+     */
+    passkeyBlockedReason:
+      IP_LITERAL.test(hostname)
+        ? `Passkeys can’t be created over a raw IP address (${hostname}). Reach the app on a hostname served over HTTPS — or sign in with your access code here.`
+        : proto !== "https" && hostname !== "localhost"
+          ? `Passkeys need HTTPS. This page is on ${proto}://${host} — reach the app over HTTPS, or sign in with your access code here.`
+          : null,
   };
 }
 

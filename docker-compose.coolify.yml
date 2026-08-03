@@ -11,6 +11,14 @@
 #     life of the resource — one less secret to invent or store.
 #   • No `${VAR:?...}` guards: Coolify supplies env vars from its own UI, and
 #     the shell-style failure syntax reads as a parse error there.
+#   • Pulls a prebuilt image instead of building. A small VPS gets the build
+#     OOM-killed partway through `next build`, so .github/workflows/build-image.yml
+#     builds it on GitHub's runners and publishes to ghcr.io; the server only
+#     pulls. To go back to building on the server, swap the `image:` line for:
+#         build:
+#           context: .
+#           args:
+#             NEXT_PUBLIC_TIMEZONE: ${NEXT_PUBLIC_TIMEZONE:-Asia/Kolkata}
 
 services:
   db:
@@ -31,13 +39,11 @@ services:
       retries: 10
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        # NEXT_PUBLIC_* is inlined at build time, so it has to arrive here
-        # rather than as a runtime environment variable.
-        NEXT_PUBLIC_TIMEZONE: ${NEXT_PUBLIC_TIMEZONE:-Asia/Kolkata}
+    # Built and published by GitHub Actions on every push to main.
+    # NEXT_PUBLIC_TIMEZONE is baked in there — it is inlined into the client
+    # bundle at build time and cannot be changed by a runtime variable.
+    image: ghcr.io/s4meer-git/onyx:latest
+    pull_policy: always
     restart: unless-stopped
     depends_on:
       db:
